@@ -1,29 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:online_grocery/core/extensions/context_extension.dart';
 import 'package:online_grocery/domain/core/failures.dart';
 
 /// Maps the failure to a message for the user
 /// This is used to show the user a message about the failure
 /// This is used in the UI layer
 class FailureMapper {
-  const FailureMapper();
+  final BuildContext context;
+  const FailureMapper(this.context);
 
   String mapFailureToMessage(Failure failure) {
     switch (failure) {
       case NetworkFailure():
-        return 'Network failure';
+        return context.appLocalizations.error_network;
       case ServerFailure():
-        return 'Server failure';
+        return context.appLocalizations.error_server('500');
       case CacheFailure():
-        return 'Cache failure';
+        return context.appLocalizations.error_cache;
       case UnauthorizedFailure():
-        return 'Unauthorized failure';
+        return context.appLocalizations.error_unauthorized;
       case ForbiddenFailure():
-        return 'Forbidden failure';
+        return context.appLocalizations.error_forbidden;
       case NoInternetConnectionFailure():
-        return 'No internet connection';
+        return context.appLocalizations.error_no_internet;
       case UnknownFailure():
-        return 'Unknown failure';
+        return context.appLocalizations.error_unknown;
       default:
-        return 'Unknown failure';
+        return context.appLocalizations.error_unknown;
     }
   }
 }

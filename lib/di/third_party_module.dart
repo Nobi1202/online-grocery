@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:online_grocery/core/env/app_config.dart';
 import 'package:online_grocery/data/core/dio_logger.dart';
 import 'package:online_grocery/data/core/interceptors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @module
 abstract class ThirdPartyModule {
@@ -27,5 +29,14 @@ abstract class ThirdPartyModule {
     dio.interceptors.addAll([networkInterceptor]);
 
     return dio;
+  }
+
+  @preResolve
+  Future<SharedPreferences> sharedPreferences() async {
+    return await SharedPreferences.getInstance();
+  }
+
+  FlutterSecureStorage secureStorage() {
+    return FlutterSecureStorage();
   }
 }

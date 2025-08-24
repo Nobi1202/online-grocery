@@ -10,12 +10,15 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i361;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:online_grocery/core/env/app_config.dart' as _i377;
 import 'package:online_grocery/core/logging/app_logger.dart' as _i117;
 import 'package:online_grocery/core/logging/console_app_logger.dart' as _i170;
 import 'package:online_grocery/data/core/interceptors.dart' as _i675;
+import 'package:online_grocery/data/datasources/local/secure_storage.dart'
+    as _i12;
 import 'package:online_grocery/data/datasources/remote/api_service.dart'
     as _i84;
 import 'package:online_grocery/data/repositories/auth_respository_impl.dart'
@@ -25,6 +28,11 @@ import 'package:online_grocery/di/third_party_module.dart' as _i410;
 import 'package:online_grocery/domain/repositories/auth_repository.dart'
     as _i752;
 import 'package:online_grocery/domain/usecase/user_login_usecase.dart' as _i999;
+import 'package:online_grocery/presentation/bloc/locale/locale_bloc.dart'
+    as _i356;
+import 'package:online_grocery/presentation/bloc/login/login_bloc.dart'
+    as _i109;
+import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 const String _dev = 'dev';
 const String _staging = 'staging';
@@ -32,13 +40,21 @@ const String _prod = 'prod';
 
 extension GetItInjectableX on _i174.GetIt {
   // initializes the registration of main-scope dependencies inside of GetIt
-  _i174.GetIt init({
+  Future<_i174.GetIt> init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    final envModule = _$EnvModule();
     final thirdPartyModule = _$ThirdPartyModule();
+    final envModule = _$EnvModule();
+    await gh.factoryAsync<_i460.SharedPreferences>(
+      () => thirdPartyModule.sharedPreferences(),
+      preResolve: true,
+    );
+    gh.factory<_i558.FlutterSecureStorage>(
+      () => thirdPartyModule.secureStorage(),
+    );
+    gh.factory<_i109.LoginBloc>(() => _i109.LoginBloc());
     gh.singleton<_i377.AppConfig>(
       () => envModule.devConfig(),
       registerFor: {_dev},
@@ -57,10 +73,19 @@ extension GetItInjectableX on _i174.GetIt {
       instanceName: 'baseUrl',
       registerFor: {_dev},
     );
+    gh.singleton<_i12.SecureStorage>(
+      () => _i12.SecureStorage(
+        gh<_i558.FlutterSecureStorage>(),
+        gh<_i460.SharedPreferences>(),
+      ),
+    );
     gh.lazySingleton<_i117.AppLogger>(() => _i170.ConsoleAppLogger());
     gh.singleton<_i377.AppConfig>(
       () => envModule.prodConfig(),
       registerFor: {_prod},
+    );
+    gh.factory<_i356.LocaleBloc>(
+      () => _i356.LocaleBloc(gh<_i12.SecureStorage>()),
     );
     gh.singleton<String>(
       () => envModule.prodBaseUrl(gh<_i377.AppConfig>()),
@@ -88,6 +113,6 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$EnvModule extends _i262.EnvModule {}
-
 class _$ThirdPartyModule extends _i410.ThirdPartyModule {}
+
+class _$EnvModule extends _i262.EnvModule {}

@@ -28,5 +28,7 @@ Future<Either<Failure, T>> guardDio<T>(Future<T> Function() task) async {
     return Left(NoInternetConnectionFailure(cause: e, stackTrace: stackTrace));
   } on UnknownException catch (e, stackTrace) {
     return Left(UnknownFailure(cause: e, stackTrace: stackTrace));
+  } catch (e, stackTrace) {
+    return Left(UnknownFailure(cause: e, stackTrace: stackTrace));
   }
 }

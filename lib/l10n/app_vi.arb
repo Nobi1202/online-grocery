@@ -1,0 +1,20 @@
+{
+  "@@locale": "vi",
+  "app_name": "Cửa hàng thực phẩm",
+  "english": "Tiếng Anh",
+  "vietnamese": "Tiếng Việt",
+
+  "login": "Đăng nhập",
+  "username": "Tên đăng nhập",
+  "password": "Mật khẩu",
+  "sign_in": "Đăng nhập",
+  "welcome": "Xin chào {name}",
+
+  "error_network": "Lỗi mạng, vui lòng thử lại.",
+  "error_no_internet": "Không có kết nối internet.",
+  "error_unauthorized": "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+  "error_forbidden": "Bạn không có quyền thao tác.",
+  "error_server": "Lỗi máy chủ ({code}). Vui lòng thử sau.",
+  "error_cache": "Lỗi dữ liệu.",
+  "error_unknown": "Đã xảy ra lỗi."
+}
