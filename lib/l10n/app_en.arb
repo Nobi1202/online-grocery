@@ -1,0 +1,20 @@
+{
+  "@@locale": "en",
+  "app_name": "Online Grocery",
+  "english": "English",
+  "vietnamese": "Vietnamese",
+
+  "login": "Login",
+  "username": "Username",
+  "password": "Password",
+  "sign_in": "Sign in",
+  "welcome": "Welcome",
+
+  "error_network": "Network error, please try again.",
+  "error_no_internet": "No internet connection.",
+  "error_unauthorized": "Your session has expired. Please sign in again.",
+  "error_forbidden": "You don't have permission to do that.",
+  "error_server": "Server error ({code}). Please try later.",
+  "error_cache": "Data error.",
+  "error_unknown": "Something went wrong."
+}
