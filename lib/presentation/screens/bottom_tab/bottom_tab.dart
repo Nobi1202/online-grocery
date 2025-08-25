@@ -18,8 +18,18 @@ class _BottomTabState extends State<BottomTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          const ShopScreen(),
+          const ExploreScreen(),
+          const CartScreen(),
+          const FavouriteScreen(),
+          const AccountScreen(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Shop'),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Explore'),
@@ -35,21 +45,5 @@ class _BottomTabState extends State<BottomTab> {
         },
       ),
     );
-  }
-
-  Widget _buildBody() {
-    switch (_selectedIndex) {
-      case 0:
-        return const ShopScreen();
-      case 1:
-        return const ExploreScreen();
-      case 2:
-        return const CartScreen();
-      case 3:
-        return const FavouriteScreen();
-      case 4:
-        return const AccountScreen();
-    }
-    return const SizedBox.shrink();
   }
 }
