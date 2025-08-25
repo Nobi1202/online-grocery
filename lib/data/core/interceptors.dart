@@ -3,12 +3,13 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:online_grocery/core/logging/app_logger.dart';
+import 'package:online_grocery/data/datasources/local/secure_storage.dart';
 
 @lazySingleton
 class NetworkInterceptor extends Interceptor {
-  NetworkInterceptor(this._log);
+  NetworkInterceptor(this._log, this._tokens);
 
-  // final AuthTokenStore _tokens;
+  final SecureStorage _tokens;
   final AppLogger _log;
 
   @override
@@ -16,10 +17,10 @@ class NetworkInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // final token = await _tokens.readAccessToken();
-    // if (token != null && token.isNotEmpty) {
-    //   options.headers['Authorization'] = 'Bearer $token';
-    // }
+    final token = await _tokens.getToken();
+    if (token != null && token.isNotEmpty) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
     _log.t(
       'REQ ${options.method} ${options.uri}',
       meta: {

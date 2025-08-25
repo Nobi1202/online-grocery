@@ -6,11 +6,11 @@ import 'package:online_grocery/domain/entities/user_login_entity.dart';
 import 'package:online_grocery/domain/repositories/auth_repository.dart';
 
 @Injectable()
-final class UserLoginUsecase
+final class LoginUserUsecase
     extends UseCaseAsync<UserLoginEntity, UserLoginSchema> {
   final IAuthRepository _authRepository;
 
-  UserLoginUsecase(this._authRepository);
+  LoginUserUsecase(this._authRepository);
 
   @override
   ResultFuture<UserLoginEntity> call(UserLoginSchema params) {

@@ -27,11 +27,12 @@ import 'package:online_grocery/di/env_module.dart' as _i262;
 import 'package:online_grocery/di/third_party_module.dart' as _i410;
 import 'package:online_grocery/domain/repositories/auth_repository.dart'
     as _i752;
-import 'package:online_grocery/domain/usecase/user_login_usecase.dart' as _i999;
+import 'package:online_grocery/domain/usecase/login_user_usecase.dart' as _i47;
 import 'package:online_grocery/presentation/bloc/locale/locale_bloc.dart'
     as _i356;
 import 'package:online_grocery/presentation/bloc/login/login_bloc.dart'
     as _i109;
+import 'package:online_grocery/presentation/error/failure_mapper.dart' as _i519;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 const String _dev = 'dev';
@@ -54,7 +55,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i558.FlutterSecureStorage>(
       () => thirdPartyModule.secureStorage(),
     );
-    gh.factory<_i109.LoginBloc>(() => _i109.LoginBloc());
     gh.singleton<_i377.AppConfig>(
       () => envModule.devConfig(),
       registerFor: {_dev},
@@ -62,6 +62,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i377.AppConfig>(
       () => envModule.stagingConfig(),
       registerFor: {_staging},
+    );
+    gh.factoryParam<_i109.LoginBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i109.LoginBloc(_failureMapper),
     );
     gh.singleton<String>(
       () => envModule.stagingBaseUrl(gh<_i377.AppConfig>()),
@@ -87,13 +90,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i356.LocaleBloc>(
       () => _i356.LocaleBloc(gh<_i12.SecureStorage>()),
     );
+    gh.lazySingleton<_i675.NetworkInterceptor>(
+      () => _i675.NetworkInterceptor(
+        gh<_i117.AppLogger>(),
+        gh<_i12.SecureStorage>(),
+      ),
+    );
     gh.singleton<String>(
       () => envModule.prodBaseUrl(gh<_i377.AppConfig>()),
       instanceName: 'baseUrl',
       registerFor: {_prod},
-    );
-    gh.lazySingleton<_i675.NetworkInterceptor>(
-      () => _i675.NetworkInterceptor(gh<_i117.AppLogger>()),
     );
     gh.lazySingleton<_i361.Dio>(
       () => thirdPartyModule.dio(
@@ -106,8 +112,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i752.IAuthRepository>(
       () => _i729.AuthRepositoryImpl(gh<_i84.ApiService>()),
     );
-    gh.factory<_i999.UserLoginUsecase>(
-      () => _i999.UserLoginUsecase(gh<_i752.IAuthRepository>()),
+    gh.factory<_i47.LoginUserUsecase>(
+      () => _i47.LoginUserUsecase(gh<_i752.IAuthRepository>()),
     );
     return this;
   }
