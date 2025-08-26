@@ -4,6 +4,7 @@ import 'package:online_grocery/di/injector.dart';
 import 'package:online_grocery/presentation/bloc/account/account_bloc.dart';
 import 'package:online_grocery/presentation/bloc/account/account_event.dart';
 import 'package:online_grocery/presentation/bloc/account/account_state.dart';
+import 'package:online_grocery/presentation/error/failure_mapper.dart';
 import 'package:online_grocery/presentation/shared/common_dialogs.dart';
 
 class AccountScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<AccountBloc>(),
+      create: (context) => getIt<AccountBloc>(param1: FailureMapper(context)),
       child: const _AccountScreenView(),
     );
   }

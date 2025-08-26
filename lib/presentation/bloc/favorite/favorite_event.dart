@@ -5,3 +5,5 @@ class OnFavoriteItemsEvent extends FavoriteEvent {
 
   OnFavoriteItemsEvent(this.id);
 }
+
+class OnClearErrorEvent extends FavoriteEvent {}

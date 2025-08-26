@@ -81,6 +81,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factoryParam<_i109.LoginBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i109.LoginBloc(_failureMapper),
     );
+    gh.factoryParam<_i37.AccountBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i37.AccountBloc(_failureMapper),
+    );
+    gh.factoryParam<_i268.FavoriteBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i268.FavoriteBloc(_failureMapper),
+    );
+    gh.factoryParam<_i257.CartBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i257.CartBloc(_failureMapper),
+    );
     gh.singleton<String>(
       () => envModule.stagingBaseUrl(gh<_i377.AppConfig>()),
       instanceName: 'baseUrl',
@@ -141,15 +150,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i854.GetCartItemsUsecase>(
       () => _i854.GetCartItemsUsecase(gh<_i642.ICartRepository>()),
-    );
-    gh.factory<_i37.AccountBloc>(
-      () => _i37.AccountBloc(gh<_i183.GetUserInfoUsecase>()),
-    );
-    gh.factory<_i257.CartBloc>(
-      () => _i257.CartBloc(gh<_i854.GetCartItemsUsecase>()),
-    );
-    gh.factory<_i268.FavoriteBloc>(
-      () => _i268.FavoriteBloc(gh<_i277.GetFavoriteItemsUsecase>()),
     );
     return this;
   }
