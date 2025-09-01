@@ -8,12 +8,9 @@ part of 'cart_detail_dto.dart';
 
 CartDetailDto _$CartDetailDtoFromJson(Map<String, dynamic> json) =>
     CartDetailDto(
-      carts:
-          (json['carts'] as List<dynamic>)
-              .map(
-                (e) => SingleCartDetailDto.fromJson(e as Map<String, dynamic>),
-              )
-              .toList(),
+      carts: (json['carts'] as List<dynamic>)
+          .map((e) => SingleCartDetailDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
       total: (json['total'] as num).toDouble(),
       skip: (json['skip'] as num).toInt(),
       limit: (json['limit'] as num).toInt(),
@@ -30,10 +27,9 @@ Map<String, dynamic> _$CartDetailDtoToJson(CartDetailDto instance) =>
 SingleCartDetailDto _$SingleCartDetailDtoFromJson(Map<String, dynamic> json) =>
     SingleCartDetailDto(
       id: (json['id'] as num).toInt(),
-      products:
-          (json['products'] as List<dynamic>)
-              .map((e) => ProductItemDto.fromJson(e as Map<String, dynamic>))
-              .toList(),
+      products: (json['products'] as List<dynamic>)
+          .map((e) => ProductItemDto.fromJson(e as Map<String, dynamic>))
+          .toList(),
       total: (json['total'] as num).toDouble(),
       discountedTotal: (json['discountedTotal'] as num).toDouble(),
       userId: (json['userId'] as num).toInt(),
