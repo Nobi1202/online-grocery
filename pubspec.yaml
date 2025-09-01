@@ -60,6 +60,10 @@ dev_dependencies:
   retrofit_generator: ^9.1.7
   json_serializable: ^6.9.3
   freezed: ^2.5.8
+  flutter_gen_runner: ^5.11.0
+
+flutter_gen:
+  output: lib/core/assets_gen/
 
 flutter:
   uses-material-design: true

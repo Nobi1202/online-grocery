@@ -78,17 +78,17 @@ extension GetItInjectableX on _i174.GetIt {
       () => envModule.stagingConfig(),
       registerFor: {_staging},
     );
-    gh.factoryParam<_i109.LoginBloc, _i519.FailureMapper, dynamic>(
-      (_failureMapper, _) => _i109.LoginBloc(_failureMapper),
-    );
-    gh.factoryParam<_i37.AccountBloc, _i519.FailureMapper, dynamic>(
-      (_failureMapper, _) => _i37.AccountBloc(_failureMapper),
-    );
     gh.factoryParam<_i268.FavoriteBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i268.FavoriteBloc(_failureMapper),
     );
     gh.factoryParam<_i257.CartBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i257.CartBloc(_failureMapper),
+    );
+    gh.factoryParam<_i37.AccountBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i37.AccountBloc(_failureMapper),
+    );
+    gh.factoryParam<_i109.LoginBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i109.LoginBloc(_failureMapper),
     );
     gh.singleton<String>(
       () => envModule.stagingBaseUrl(gh<_i377.AppConfig>()),
