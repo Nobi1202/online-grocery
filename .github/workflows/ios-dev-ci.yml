@@ -1,0 +1,42 @@
+name: ios-dev-ci
+
+on:
+  # push:
+  #   branches: [develop, main, "feature/*", "release/*"]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  build-ios-dev:
+    name: Build iOS DEV
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      # - name: Set up Ruby
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     ruby-version: 2.7
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.32.8
+      - name: Install dependencies
+        run: flutter pub get
+      # - name: Generate l10n
+      #   run: flutter gen-10n
+      - name: Code generation ( assets, DI , etc. )
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+      - name: Format check (non-blocking)
+        run: dart format --output=none --set-exit-if-changed lib test || true
+      - name: Flutter Analyze
+        run: flutter analyze
+      - name: Build iOS Dev (unsigned)
+        run: flutter build ios --release --flavor dev -t lib/main_dev.dart --no-codesign
+      # # Upload .app artifact để tham khảo (không cài được lên device thật)
+      # - name: Upload iOS app artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ios-dev-app-unsigned
+      #     path: build/ios/iphoneos/*.app

@@ -1,8 +1,8 @@
 name: android-dev-ci
 
 on:
-  push:
-    branches: [develop, main, "feature/*", "release/*"]
+  # push:
+  #   branches: [develop, main, "feature/*", "release/*"]
   pull_request:
     branches: [develop, main]
 
