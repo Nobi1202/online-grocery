@@ -35,6 +35,17 @@ jobs:
         run: flutter analyze
       - name: Build Android Dev
         run: flutter build apk --release --flavor dev -t lib/main_dev.dart
+      - name: Setup Ruby (for fastlane)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Install fastlane
+        working-directory: android
+        run: |
+          bundle install
+          bundle exec fastlane --version
       - name: Distribute android app dev to firebase distribution
         working-directory: ./android
         run: bundle exec fastlane distribute_android_dev_app_via_firebase
