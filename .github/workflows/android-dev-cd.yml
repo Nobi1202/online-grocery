@@ -1,4 +1,4 @@
-name: android-dev-ci
+name: android-dev-cd
 
 on:
   # push:
