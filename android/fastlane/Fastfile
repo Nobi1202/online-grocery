@@ -17,6 +17,7 @@ default_platform(:android)
 
 FIREBASE_ANDROID_APP_ID = ENV["FIREBASE_ANDROID_APP_ID"]
 FIREBASE_SERVICE_ACCOUNT = ENV["FIREBASE_SERVICE_ACCOUNT"]
+GOOGLE_APPLICATION_CREDENTIALS = ENV["GOOGLE_APPLICATION_CREDENTIALS"]
 
 platform :android do
   desc "Deploy online grocery androi dev to Firebase App Distribution"
@@ -27,7 +28,8 @@ platform :android do
       android_artifact_path: "../build/app/outputs/flutter-apk/app-dev-release.apk",
       release_notes_file: "../app_distribution/release_notes_dev.txt",
       groups_file: "../app_distribution/dev_groups.txt",
-      service_credentials_file: FIREBASE_SERVICE_ACCOUNT,
+      service_credentials_file: GOOGLE_APPLICATION_CREDENTIALS,
+      # service_credentials_file: FIREBASE_SERVICE_ACCOUNT,
       # service_credentials_file: "../firebase_service.json",
     )
   end

@@ -46,12 +46,16 @@ jobs:
         run: |
           bundle install
           bundle exec fastlane --version
+      - name: Setup Firebase credentials
+        run: |
+          echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > $RUNNER_TEMP/fad.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/fad.json" >> $GITHUB_ENV
       - name: Distribute android app dev to firebase distribution
         working-directory: ./android
         run: bundle exec fastlane distribute_android_dev_app_via_firebase
         env:
           FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
       # - name: Upload artifacts
       #   uses: actions/upload-artifact@v3
       #   with:
