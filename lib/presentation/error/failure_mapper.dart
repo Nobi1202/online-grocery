@@ -14,7 +14,7 @@ class FailureMapper {
       case NetworkFailure():
         return context.appLocalizations.error_network;
       case ServerFailure():
-        return context.appLocalizations.error_server('500');
+        return context.appLocalizations.error_server;
       case CacheFailure():
         return context.appLocalizations.error_cache;
       case UnauthorizedFailure():
