@@ -25,12 +25,20 @@ import 'package:online_grocery/data/repositories/auth_respository_impl.dart'
     as _i729;
 import 'package:online_grocery/data/repositories/cart_repository_impl.dart'
     as _i1045;
+import 'package:online_grocery/data/repositories/product_repository_impl.dart'
+    as _i1012;
 import 'package:online_grocery/di/env_module.dart' as _i262;
 import 'package:online_grocery/di/third_party_module.dart' as _i410;
 import 'package:online_grocery/domain/repositories/auth_repository.dart'
     as _i752;
 import 'package:online_grocery/domain/repositories/cart_repository.dart'
     as _i642;
+import 'package:online_grocery/domain/repositories/product_repository.dart'
+    as _i56;
+import 'package:online_grocery/domain/usecase/get_all_product_category_usecase.dart'
+    as _i600;
+import 'package:online_grocery/domain/usecase/get_all_products_by_category_usecase.dart'
+    as _i32;
 import 'package:online_grocery/domain/usecase/get_cart_items_usecase.dart'
     as _i854;
 import 'package:online_grocery/domain/usecase/get_favorite_items_usecase.dart'
@@ -139,11 +147,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i642.ICartRepository>(
       () => _i1045.CartRepositoryImpl(gh<_i84.ApiService>()),
     );
+    gh.lazySingleton<_i56.IProductRepository>(
+      () => _i1012.ProductRepositoryImpl(gh<_i84.ApiService>()),
+    );
     gh.factory<_i47.LoginUserUsecase>(
       () => _i47.LoginUserUsecase(gh<_i752.IAuthRepository>()),
     );
     gh.factory<_i183.GetUserInfoUsecase>(
       () => _i183.GetUserInfoUsecase(gh<_i752.IAuthRepository>()),
+    );
+    gh.factory<_i32.GetAllProductsByCategoryUsecase>(
+      () => _i32.GetAllProductsByCategoryUsecase(gh<_i56.IProductRepository>()),
+    );
+    gh.factory<_i600.GetAllProductCategoryUsecase>(
+      () => _i600.GetAllProductCategoryUsecase(gh<_i56.IProductRepository>()),
     );
     gh.factory<_i277.GetFavoriteItemsUsecase>(
       () => _i277.GetFavoriteItemsUsecase(gh<_i642.ICartRepository>()),
