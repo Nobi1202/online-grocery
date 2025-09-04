@@ -10,4 +10,5 @@ class RouteName {
   static const String explore = '/explore';
   static const String favourite = '/favourite';
   static const String shop = '/shop';
+  static const String exploreProducts = '/explore-products';
 }

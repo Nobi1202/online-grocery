@@ -34,28 +34,30 @@ ProductDetailDto _$ProductDetailDtoFromJson(Map<String, dynamic> json) =>
       category: json['category'] as String,
       price: (json['price'] as num).toDouble(),
       discountPercentage: (json['discountPercentage'] as num).toDouble(),
-      rating: (json['rating'] as num).toDouble(),
-      stock: (json['stock'] as num).toInt(),
-      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
-      brand: json['brand'] as String,
-      sku: json['sku'] as String,
+      rating: (json['rating'] as num?)?.toDouble(),
+      stock: (json['stock'] as num?)?.toInt(),
+      tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      brand: json['brand'] as String?,
+      sku: json['sku'] as String?,
       weight: (json['weight'] as num).toDouble(),
-      dimensions: DimensionsDto.fromJson(
-        json['dimensions'] as Map<String, dynamic>,
-      ),
-      warrantyInformation: json['warrantyInformation'] as String,
-      shippingInformation: json['shippingInformation'] as String,
-      availabilityStatus: json['availabilityStatus'] as String,
-      reviews: (json['reviews'] as List<dynamic>)
-          .map((e) => ReviewDto.fromJson(e as Map<String, dynamic>))
+      dimensions: json['dimensions'] == null
+          ? null
+          : DimensionsDto.fromJson(json['dimensions'] as Map<String, dynamic>),
+      warrantyInformation: json['warrantyInformation'] as String?,
+      shippingInformation: json['shippingInformation'] as String?,
+      availabilityStatus: json['availabilityStatus'] as String?,
+      reviews: (json['reviews'] as List<dynamic>?)
+          ?.map((e) => ReviewDto.fromJson(e as Map<String, dynamic>))
           .toList(),
-      returnPolicy: json['returnPolicy'] as String,
-      minimumOrderQuantity: (json['minimumOrderQuantity'] as num).toInt(),
-      meta: MetaDto.fromJson(json['meta'] as Map<String, dynamic>),
-      images: (json['images'] as List<dynamic>)
-          .map((e) => e as String)
+      returnPolicy: json['returnPolicy'] as String?,
+      minimumOrderQuantity: (json['minimumOrderQuantity'] as num?)?.toInt(),
+      meta: json['meta'] == null
+          ? null
+          : MetaDto.fromJson(json['meta'] as Map<String, dynamic>),
+      images: (json['images'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      thumbnail: json['thumbnail'] as String,
+      thumbnail: json['thumbnail'] as String?,
     );
 
 Map<String, dynamic> _$ProductDetailDtoToJson(ProductDetailDto instance) =>
@@ -72,14 +74,14 @@ Map<String, dynamic> _$ProductDetailDtoToJson(ProductDetailDto instance) =>
       'brand': instance.brand,
       'sku': instance.sku,
       'weight': instance.weight,
-      'dimensions': instance.dimensions.toJson(),
+      'dimensions': instance.dimensions?.toJson(),
       'warrantyInformation': instance.warrantyInformation,
       'shippingInformation': instance.shippingInformation,
       'availabilityStatus': instance.availabilityStatus,
-      'reviews': instance.reviews.map((e) => e.toJson()).toList(),
+      'reviews': instance.reviews?.map((e) => e.toJson()).toList(),
       'returnPolicy': instance.returnPolicy,
       'minimumOrderQuantity': instance.minimumOrderQuantity,
-      'meta': instance.meta.toJson(),
+      'meta': instance.meta?.toJson(),
       'images': instance.images,
       'thumbnail': instance.thumbnail,
     };
@@ -99,11 +101,11 @@ Map<String, dynamic> _$DimensionsDtoToJson(DimensionsDto instance) =>
     };
 
 ReviewDto _$ReviewDtoFromJson(Map<String, dynamic> json) => ReviewDto(
-  rating: (json['rating'] as num).toInt(),
-  comment: json['comment'] as String,
-  date: json['date'] as String,
-  reviewerName: json['reviewerName'] as String,
-  reviewerEmail: json['reviewerEmail'] as String,
+  rating: (json['rating'] as num?)?.toInt(),
+  comment: json['comment'] as String?,
+  date: json['date'] as String?,
+  reviewerName: json['reviewerName'] as String?,
+  reviewerEmail: json['reviewerEmail'] as String?,
 );
 
 Map<String, dynamic> _$ReviewDtoToJson(ReviewDto instance) => <String, dynamic>{
@@ -115,10 +117,10 @@ Map<String, dynamic> _$ReviewDtoToJson(ReviewDto instance) => <String, dynamic>{
 };
 
 MetaDto _$MetaDtoFromJson(Map<String, dynamic> json) => MetaDto(
-  createdAt: json['createdAt'] as String,
-  updatedAt: json['updatedAt'] as String,
-  barcode: json['barcode'] as String,
-  qrCode: json['qrCode'] as String,
+  createdAt: json['createdAt'] as String?,
+  updatedAt: json['updatedAt'] as String?,
+  barcode: json['barcode'] as String?,
+  qrCode: json['qrCode'] as String?,
 );
 
 Map<String, dynamic> _$MetaDtoToJson(MetaDto instance) => <String, dynamic>{

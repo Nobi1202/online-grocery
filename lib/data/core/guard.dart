@@ -10,6 +10,10 @@ import 'package:online_grocery/domain/core/failures.dart';
 /// Either is used to return the data or the failure
 /// task is the function that is called to get the data
 /// stackTrace is the stack trace of the exception
+/// guardDio is an error handling wrapper function designed to:
+/// - catch and map dio exceptions to failures
+/// - covert all exceptions to failures following clean architecture principles
+/// - return the result as [Either<Failure, T>] type -> to handle errors with function progamming
 Future<Either<Failure, T>> guardDio<T>(Future<T> Function() task) async {
   try {
     final data = await task();

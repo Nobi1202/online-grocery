@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,8 +48,8 @@ class _FavouriteScreenView extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 27),
                           child: Row(
                             children: [
-                              Image.network(
-                                item?.thumbnail ?? '',
+                              CachedNetworkImage(
+                                imageUrl: item?.thumbnail ?? '',
                                 height: 55.h,
                                 width: 30.w,
                               ),

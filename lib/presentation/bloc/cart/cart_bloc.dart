@@ -12,12 +12,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final FailureMapper _failureMapper;
 
   CartBloc(@factoryParam this._failureMapper) : super(CartState()) {
-    on<OnCartItemsEvent>(_onCartItems);
-    add(OnCartItemsEvent(1));
+    on<OnGetCartItemsEvent>(_onCartItems);
+    on<OnClearCartItemsErrorEvent>(_onClearCartItemsError);
+    add(OnGetCartItemsEvent(15));
   }
 
   Future<void> _onCartItems(
-    OnCartItemsEvent event,
+    OnGetCartItemsEvent event,
     Emitter<CartState> emit,
   ) async {
     try {
@@ -37,5 +38,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } finally {
       emit(state.copyWith(isLoading: false));
     }
+  }
+
+  void _onClearCartItemsError(
+    OnClearCartItemsErrorEvent event,
+    Emitter<CartState> emit,
+  ) {
+    emit(state.copyWith(apiError: null));
   }
 }

@@ -20,5 +20,14 @@
   "error_forbidden": "Bạn không có quyền thao tác.",
   "error_server": "Lỗi máy chủ. Vui lòng thử sau.",
   "error_cache": "Lỗi dữ liệu.",
-  "error_unknown": "Đã xảy ra lỗi."
+  "error_unknown": "Đã xảy ra lỗi.",
+  "orders": "Đơn hàng",
+  "myDetails": "Chi tiết của tôi",
+  "deliveryAddress": "Địa chỉ giao hàng",
+  "paymentMethods": "Phương thức thanh toán",
+  "promoCard": "Thẻ giảm giá",
+  "notifications": "Thông báo",
+  "help": "Trợ giúp",
+  "about": "Về chúng tôi",
+  "languges": "Ngôn ngữ"
 }

@@ -67,4 +67,31 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get error_unknown => 'Đã xảy ra lỗi.';
+
+  @override
+  String get orders => 'Đơn hàng';
+
+  @override
+  String get myDetails => 'Chi tiết của tôi';
+
+  @override
+  String get deliveryAddress => 'Địa chỉ giao hàng';
+
+  @override
+  String get paymentMethods => 'Phương thức thanh toán';
+
+  @override
+  String get promoCard => 'Thẻ giảm giá';
+
+  @override
+  String get notifications => 'Thông báo';
+
+  @override
+  String get help => 'Trợ giúp';
+
+  @override
+  String get about => 'Về chúng tôi';
+
+  @override
+  String get languges => 'Ngôn ngữ';
 }

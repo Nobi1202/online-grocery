@@ -20,5 +20,14 @@
   "error_forbidden": "You don't have permission to do that.",
   "error_server": "Server error. Please try later.",
   "error_cache": "Data error.",
-  "error_unknown": "Something went wrong."
+  "error_unknown": "Something went wrong.",
+  "orders": "Orders",
+  "myDetails": "My Details",
+  "deliveryAddress": "Delivery Address",
+  "paymentMethods": "Payment Methods",
+  "promoCard": "Promo Card",
+  "notifications": "Notifications",
+  "help": "Help",
+  "about": "About",
+  "languges": "Languages"
 }
