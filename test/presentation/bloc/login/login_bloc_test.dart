@@ -11,7 +11,6 @@ import 'package:online_grocery/domain/core/failures.dart';
 import 'package:online_grocery/domain/entities/user_login_entity.dart';
 import 'package:online_grocery/domain/repositories/auth_repository.dart';
 import 'package:online_grocery/domain/usecase/login_user_usecase.dart';
-import 'package:online_grocery/presentation/bloc/login/login_bloc.dart';
 import 'package:online_grocery/presentation/bloc/login/login_event.dart';
 import 'package:online_grocery/presentation/bloc/login/login_state.dart';
 import 'package:online_grocery/presentation/error/failure_mapper.dart';

@@ -31,4 +31,11 @@ class ProductRepositoryImpl extends IProductRepository {
       return dto.toEntity();
     });
   }
+
+  @override
+  ResultFuture<void> deleteProduct(int id) {
+    return guardDio<void>(() async {
+      await _apiService.deleteProduct(id);
+    });
+  }
 }

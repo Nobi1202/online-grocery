@@ -3,6 +3,7 @@ import 'package:online_grocery/data/core/guard.dart';
 import 'package:online_grocery/data/datasources/remote/api_service.dart';
 import 'package:online_grocery/data/mappers/list_of_cart_items_mapper.dart';
 import 'package:online_grocery/data/mappers/list_of_favorite_items_mapper.dart';
+import 'package:online_grocery/data/models/params/update_a_cart_params.dart';
 import 'package:online_grocery/domain/core/result.dart';
 import 'package:online_grocery/domain/entities/cart_item_entity.dart';
 import 'package:online_grocery/domain/entities/favorite_item_entity.dart';
@@ -27,6 +28,13 @@ class CartRepositoryImpl extends ICartRepository {
     return guardDio<ListOfFavoriteItemEntity>(() async {
       final dto = await _apiService.getFavoriteItems(id);
       return dto.toEntity();
+    });
+  }
+
+  @override
+  ResultFuture<void> updateCartItem(UpdateACartParams params) {
+    return guardDio<void>(() async {
+      await _apiService.updateCartItem(params.id, params.cartItemSchema);
     });
   }
 }

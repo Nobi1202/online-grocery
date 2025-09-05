@@ -8,4 +8,6 @@ abstract class IProductRepository {
   ResultFuture<ListOfProductCategoryDetailEntity> getProductsByCategory(
     String category,
   );
+
+  ResultFuture<void> deleteProduct(int id);
 }

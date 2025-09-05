@@ -35,6 +35,8 @@ import 'package:online_grocery/domain/repositories/cart_repository.dart'
     as _i642;
 import 'package:online_grocery/domain/repositories/product_repository.dart'
     as _i56;
+import 'package:online_grocery/domain/usecase/delete_a_product_usecase.dart'
+    as _i916;
 import 'package:online_grocery/domain/usecase/get_all_product_category_usecase.dart'
     as _i600;
 import 'package:online_grocery/domain/usecase/get_all_products_by_category_usecase.dart'
@@ -46,6 +48,8 @@ import 'package:online_grocery/domain/usecase/get_favorite_items_usecase.dart'
 import 'package:online_grocery/domain/usecase/get_user_info_usecase.dart'
     as _i183;
 import 'package:online_grocery/domain/usecase/login_user_usecase.dart' as _i47;
+import 'package:online_grocery/domain/usecase/update_a_cart_usecase.dart'
+    as _i346;
 import 'package:online_grocery/presentation/bloc/account/account_bloc.dart'
     as _i37;
 import 'package:online_grocery/presentation/bloc/cart/cart_bloc.dart' as _i257;
@@ -162,11 +166,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i600.GetAllProductCategoryUsecase>(
       () => _i600.GetAllProductCategoryUsecase(gh<_i56.IProductRepository>()),
     );
+    gh.factory<_i916.DeleteAProductUsecase>(
+      () => _i916.DeleteAProductUsecase(gh<_i56.IProductRepository>()),
+    );
     gh.factory<_i277.GetFavoriteItemsUsecase>(
       () => _i277.GetFavoriteItemsUsecase(gh<_i642.ICartRepository>()),
     );
     gh.factory<_i854.GetCartItemsUsecase>(
       () => _i854.GetCartItemsUsecase(gh<_i642.ICartRepository>()),
+    );
+    gh.factory<_i346.UpdateACartUsecase>(
+      () => _i346.UpdateACartUsecase(gh<_i642.ICartRepository>()),
     );
     return this;
   }
