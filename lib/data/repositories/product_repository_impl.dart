@@ -38,4 +38,12 @@ class ProductRepositoryImpl extends IProductRepository {
       await _apiService.deleteProduct(id);
     });
   }
+
+  @override
+  ResultFuture<ListOfProductCategoryDetailEntity> getProducts() {
+    return guardDio<ListOfProductCategoryDetailEntity>(() async {
+      final dto = await _apiService.getProducts();
+      return dto.toEntity();
+    });
+  }
 }

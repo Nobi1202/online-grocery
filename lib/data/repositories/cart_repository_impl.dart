@@ -32,9 +32,13 @@ class CartRepositoryImpl extends ICartRepository {
   }
 
   @override
-  ResultFuture<void> updateCartItem(UpdateACartParams params) {
-    return guardDio<void>(() async {
-      await _apiService.updateCartItem(params.id, params.cartItemSchema);
+  ResultFuture<ListOfCartItemEntity> updateCartItem(UpdateACartParams params) {
+    return guardDio<ListOfCartItemEntity>(() async {
+      final dto = await _apiService.updateCartItem(
+        params.id,
+        params.cartItemSchema,
+      );
+      return dto.toListOfCartEntity();
     });
   }
 }

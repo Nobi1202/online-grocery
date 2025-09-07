@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:online_grocery/core/extensions/context_extension.dart';
+import 'package:online_grocery/data/models/params/update_a_cart_params.dart';
+import 'package:online_grocery/data/models/request/cart_item_schema.dart';
 import 'package:online_grocery/di/injector.dart';
 import 'package:online_grocery/presentation/bloc/cart/cart_bloc.dart';
 import 'package:online_grocery/presentation/bloc/cart/cart_event.dart';
@@ -10,6 +12,8 @@ import 'package:online_grocery/presentation/bloc/cart/cart_state.dart';
 import 'package:online_grocery/presentation/error/failure_mapper.dart';
 import 'package:online_grocery/presentation/shared/app_button.dart';
 import 'package:online_grocery/presentation/shared/common_dialogs.dart';
+import 'package:online_grocery/presentation/theme/color_schemes.dart';
+import 'package:online_grocery/presentation/theme/typography.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -29,7 +33,7 @@ class _CartScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Favourite')),
+      appBar: AppBar(title: Text('My Cart')),
       body: BlocConsumer<CartBloc, CartState>(
         builder: (context, state) {
           return Stack(
@@ -57,20 +61,127 @@ class _CartScreenView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(
-                                      item?.title ?? '',
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          item?.title ?? '',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            context.read<CartBloc>().add(
+                                              OnDeleteCartItemEvent(
+                                                item?.id ?? 0,
+                                              ),
+                                            );
+                                          },
+                                          child: Icon(Icons.delete),
+                                        ),
+                                      ],
                                     ),
-                                    Text('Price'),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [Text('1kg, Price')],
+                                    ),
+                                    Row(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            context.read<CartBloc>().add(
+                                              OnUpdateCartItemEvent(
+                                                UpdateACartParams(
+                                                  id: 15,
+                                                  cartItemSchema:
+                                                      CartItemSchema(
+                                                        merge: false,
+                                                        products: [
+                                                          ProductItemSchema(
+                                                            id: item?.id ?? 0,
+                                                            quantity:
+                                                                item!.quantity -
+                                                                1,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 45.w,
+                                            height: 45.w,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(17.r),
+                                              border: Border.all(
+                                                color: AppColorSchemes.cGrey1,
+                                              ),
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              '-',
+                                              style: AppTypography.tBlack18W600,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Text(
+                                          item?.quantity.toString() ?? '',
+                                          style: AppTypography.tBlack18W600,
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        GestureDetector(
+                                          onTap: () {
+                                            context.read<CartBloc>().add(
+                                              OnUpdateCartItemEvent(
+                                                UpdateACartParams(
+                                                  id: 15,
+                                                  cartItemSchema:
+                                                      CartItemSchema(
+                                                        merge: false,
+                                                        products: [
+                                                          ProductItemSchema(
+                                                            id: item?.id ?? 0,
+                                                            quantity:
+                                                                item!.quantity +
+                                                                1,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 45.w,
+                                            height: 45.w,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(17.r),
+                                              border: Border.all(
+                                                color: AppColorSchemes.cGrey1,
+                                              ),
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              '+',
+                                              style: AppTypography.tBlack18W600,
+                                            ),
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Text(
+                                          '\$${item?.price.toString() ?? ''}',
+                                          style: AppTypography.tBlack18W600,
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ),
-                              Text('\$${item?.price.toString() ?? ''}'),
-                              SizedBox(width: 8.w),
-                              InkWell(
-                                onTap: () {},
-                                child: Icon(Icons.arrow_right),
                               ),
                             ],
                           ),

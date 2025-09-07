@@ -21,38 +21,47 @@ class AppRouter {
     routes: [
       GoRoute(
         path: RouteName.splash,
+        name: RouteName.splash,
         builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         path: RouteName.getStarted,
+        name: RouteName.getStarted,
         builder: (context, state) => const GetStartedScreen(),
       ),
       GoRoute(
         path: RouteName.login,
+        name: RouteName.login,
         builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: RouteName.bottomTab,
+        name: RouteName.bottomTab,
         builder: (context, state) => const BottomTab(),
       ),
       GoRoute(
         path: RouteName.account,
+        name: RouteName.account,
         builder: (context, state) => const AccountScreen(),
       ),
       GoRoute(
         path: RouteName.cart,
+        name: RouteName.cart,
         builder: (context, state) => const CartScreen(),
       ),
       GoRoute(
         path: RouteName.explore,
+        name: RouteName.explore,
         builder: (context, state) => const ExploreScreen(),
       ),
       GoRoute(
         path: RouteName.favourite,
+        name: RouteName.favourite,
         builder: (context, state) => const FavouriteScreen(),
       ),
       GoRoute(
         path: RouteName.shop,
+        name: RouteName.shop,
         builder: (context, state) => const ShopScreen(),
       ),
       GoRoute(

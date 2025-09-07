@@ -41,8 +41,11 @@ abstract class ApiService {
   Future<void> deleteProduct(@Path('id') int id);
 
   @PUT('/carts/{id}')
-  Future<void> updateCartItem(
+  Future<SingleCartDetailDto> updateCartItem(
     @Path('id') int id,
     @Body() CartItemSchema cartItemSchema,
   );
+
+  @GET('/products')
+  Future<ProductCategoryDetailDto> getProducts();
 }

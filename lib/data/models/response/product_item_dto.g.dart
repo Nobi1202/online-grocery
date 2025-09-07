@@ -14,8 +14,9 @@ ProductItemDto _$ProductItemDtoFromJson(Map<String, dynamic> json) =>
       quantity: (json['quantity'] as num).toInt(),
       total: (json['total'] as num).toDouble(),
       discountPercentage: (json['discountPercentage'] as num).toDouble(),
-      discountedTotal: (json['discountedTotal'] as num).toDouble(),
+      discountedTotal: (json['discountedTotal'] as num?)?.toDouble(),
       thumbnail: json['thumbnail'] as String,
+      discountedPrice: (json['discountedPrice'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$ProductItemDtoToJson(ProductItemDto instance) =>
@@ -27,5 +28,6 @@ Map<String, dynamic> _$ProductItemDtoToJson(ProductItemDto instance) =>
       'total': instance.total,
       'discountPercentage': instance.discountPercentage,
       'discountedTotal': instance.discountedTotal,
+      'discountedPrice': instance.discountedPrice,
       'thumbnail': instance.thumbnail,
     };

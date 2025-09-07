@@ -10,4 +10,6 @@ abstract class IProductRepository {
   );
 
   ResultFuture<void> deleteProduct(int id);
+
+  ResultFuture<ListOfProductCategoryDetailEntity> getProducts();
 }

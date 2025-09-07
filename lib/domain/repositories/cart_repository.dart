@@ -8,5 +8,5 @@ abstract class ICartRepository {
 
   ResultFuture<ListOfFavoriteItemEntity> getFavoriteItems(int id);
 
-  ResultFuture<void> updateCartItem(UpdateACartParams params);
+  ResultFuture<ListOfCartItemEntity> updateCartItem(UpdateACartParams params);
 }

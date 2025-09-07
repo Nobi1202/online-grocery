@@ -15,6 +15,7 @@ extension ListOfProductCategoryDetailMapper on ProductCategoryDetailDto {
             price: product.price,
             thumbnail: product.thumbnail ?? '',
             weight: product.weight,
+            category: product.category,
           ),
         ),
       ),
