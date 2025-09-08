@@ -3,9 +3,11 @@ import 'package:online_grocery/data/core/guard.dart';
 import 'package:online_grocery/data/datasources/remote/api_service.dart';
 import 'package:online_grocery/data/mappers/category_mapper.dart';
 import 'package:online_grocery/data/mappers/list_of_product_category_detail_mapper.dart';
+import 'package:online_grocery/data/mappers/product_detail_mapper.dart';
 import 'package:online_grocery/domain/core/result.dart';
 import 'package:online_grocery/domain/entities/category_entity.dart';
 import 'package:online_grocery/domain/entities/product_category_detail_entity.dart';
+import 'package:online_grocery/domain/entities/product_detail_entity.dart';
 import 'package:online_grocery/domain/repositories/product_repository.dart';
 
 @LazySingleton(as: IProductRepository)
@@ -43,6 +45,14 @@ class ProductRepositoryImpl extends IProductRepository {
   ResultFuture<ListOfProductCategoryDetailEntity> getProducts() {
     return guardDio<ListOfProductCategoryDetailEntity>(() async {
       final dto = await _apiService.getProducts();
+      return dto.toEntity();
+    });
+  }
+
+  @override
+  ResultFuture<ProductDetailEntity> getProductDetail(int id) {
+    return guardDio<ProductDetailEntity>(() async {
+      final dto = await _apiService.getProductDetail(id);
       return dto.toEntity();
     });
   }

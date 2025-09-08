@@ -48,4 +48,7 @@ abstract class ApiService {
 
   @GET('/products')
   Future<ProductCategoryDetailDto> getProducts();
+
+  @GET('/products/{id}')
+  Future<ProductDetailDto> getProductDetail(@Path('id') int id);
 }

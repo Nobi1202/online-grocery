@@ -45,6 +45,8 @@ import 'package:online_grocery/domain/usecase/get_cart_items_usecase.dart'
     as _i854;
 import 'package:online_grocery/domain/usecase/get_favorite_items_usecase.dart'
     as _i277;
+import 'package:online_grocery/domain/usecase/get_product_detail_usecase.dart'
+    as _i55;
 import 'package:online_grocery/domain/usecase/get_products_usecase.dart'
     as _i905;
 import 'package:online_grocery/domain/usecase/get_user_info_usecase.dart'
@@ -61,6 +63,8 @@ import 'package:online_grocery/presentation/bloc/locale/locale_bloc.dart'
     as _i356;
 import 'package:online_grocery/presentation/bloc/login/login_bloc.dart'
     as _i109;
+import 'package:online_grocery/presentation/bloc/product_detail/product_detail_bloc.dart'
+    as _i474;
 import 'package:online_grocery/presentation/bloc/shop/shop_bloc.dart' as _i461;
 import 'package:online_grocery/presentation/error/failure_mapper.dart' as _i519;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
@@ -107,6 +111,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factoryParam<_i461.ShopBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i461.ShopBloc(_failureMapper),
+    );
+    gh.factoryParam<_i474.ProductDetailBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i474.ProductDetailBloc(_failureMapper),
     );
     gh.singleton<String>(
       () => envModule.stagingBaseUrl(gh<_i377.AppConfig>()),
@@ -177,6 +184,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i905.GetProductsUsecase>(
       () => _i905.GetProductsUsecase(gh<_i56.IProductRepository>()),
+    );
+    gh.factory<_i55.GetProductDetailUsecase>(
+      () => _i55.GetProductDetailUsecase(gh<_i56.IProductRepository>()),
     );
     gh.factory<_i277.GetFavoriteItemsUsecase>(
       () => _i277.GetFavoriteItemsUsecase(gh<_i642.ICartRepository>()),

@@ -9,6 +9,7 @@ import 'package:online_grocery/presentation/screens/explore_products/explore_pro
 import 'package:online_grocery/presentation/screens/favourite/favourite_screen.dart';
 import 'package:online_grocery/presentation/screens/get_started/get_started_screen.dart';
 import 'package:online_grocery/presentation/screens/login/login_screen.dart';
+import 'package:online_grocery/presentation/screens/product_detail/product_detail_screen.dart';
 import 'package:online_grocery/presentation/screens/shop/shop_screen.dart';
 import 'package:online_grocery/presentation/screens/splash/splash_screen.dart';
 
@@ -69,6 +70,12 @@ class AppRouter {
         name: RouteName.exploreProducts,
         builder: (context, state) =>
             ExploreProductsScreen(category: state.extra as String),
+      ),
+      GoRoute(
+        path: RouteName.productDetail,
+        name: RouteName.productDetail,
+        builder: (context, state) =>
+            ProductDetailScreen(id: state.extra as int),
       ),
     ],
   );
