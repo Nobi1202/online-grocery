@@ -50,20 +50,20 @@ class CategorizedProductsEntity extends Equatable {
 
   const CategorizedProductsEntity({required this.categorizedProducts});
 
-  /// Helper method to get products for a specific category
-  List<ProductCategoryDetailEntity> getProductsForCategory(String category) {
-    final categoryProducts = categorizedProducts
-        .where(
-          (cat) => cat.categoryName.toLowerCase() == category.toLowerCase(),
-        )
-        .firstOrNull;
-    return categoryProducts?.products ?? [];
-  }
+  // /// Helper method to get products for a specific category
+  // List<ProductCategoryDetailEntity> getProductsForCategory(String category) {
+  //   final categoryProducts = categorizedProducts
+  //       .where(
+  //         (cat) => cat.categoryName.toLowerCase() == category.toLowerCase(),
+  //       )
+  //       .firstOrNull;
+  //   return categoryProducts?.products ?? [];
+  // }
 
-  /// Helper method to get all category names
-  List<String> getAllCategoryNames() {
-    return categorizedProducts.map((cat) => cat.categoryName).toList();
-  }
+  // /// Helper method to get all category names
+  // List<String> getAllCategoryNames() {
+  //   return categorizedProducts.map((cat) => cat.categoryName).toList();
+  // }
 
   @override
   List<Object?> get props => [categorizedProducts];

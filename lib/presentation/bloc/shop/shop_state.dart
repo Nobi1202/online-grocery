@@ -3,13 +3,13 @@ import 'package:online_grocery/domain/entities/product_category_detail_entity.da
 
 class ShopState extends Equatable {
   final bool isLoading;
-  final ListOfProductCategoryDetailEntity? products;
+  // final ListOfProductCategoryDetailEntity? products;/
   final CategorizedProductsEntity? categorizedProducts;
   final String? apiError;
 
   const ShopState({
     this.isLoading = false,
-    this.products,
+    // this.products,
     this.categorizedProducts,
     this.apiError,
   });
@@ -22,7 +22,7 @@ class ShopState extends Equatable {
   }) {
     return ShopState(
       isLoading: isLoading ?? this.isLoading,
-      products: products ?? this.products,
+      // products: products ?? this.products,
       categorizedProducts: categorizedProducts ?? this.categorizedProducts,
       apiError: apiError ?? this.apiError,
     );
@@ -31,7 +31,7 @@ class ShopState extends Equatable {
   @override
   List<Object?> get props => [
     isLoading,
-    products,
+    // products,
     categorizedProducts,
     apiError,
   ];

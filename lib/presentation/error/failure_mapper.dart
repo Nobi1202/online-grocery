@@ -38,7 +38,9 @@ class FailureMapper {
   void _handleUnauthorizedFailure() {
     // Execute logout and navigation in the next frame to avoid issues during build
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.go(RouteName.login);
+      if (context.mounted) {
+        context.go(RouteName.login);
+      }
     });
   }
 }

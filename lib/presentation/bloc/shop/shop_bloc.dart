@@ -30,7 +30,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       result.fold(
         (failure) => emit(
           state.copyWith(
-            products: null,
+            // products: null,
             categorizedProducts: null,
             apiError: _failureMapper.mapFailureToMessage(failure),
           ),
@@ -39,7 +39,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
           final categorizedProducts = groupProductsByCategory(products);
           emit(
             state.copyWith(
-              products: products,
+              // products: products,
               categorizedProducts: categorizedProducts,
             ),
           );
