@@ -70,7 +70,7 @@ class _ShopScreenViewState extends State<ShopScreenView> {
                                 onTap: () {
                                   context.pushNamed(
                                     RouteName.productDetail,
-                                    extra: category?.products[index].id,
+                                    extra: {'id': category?.products[index].id},
                                   );
                                 },
                                 child: Container(

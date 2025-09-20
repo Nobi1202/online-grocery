@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chottu_link/chottu_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,11 +8,20 @@ import 'package:online_grocery/presentation/bloc/product_detail/product_detail_b
 import 'package:online_grocery/presentation/bloc/product_detail/product_detail_event.dart';
 import 'package:online_grocery/presentation/bloc/product_detail/product_detail_state.dart';
 import 'package:online_grocery/presentation/error/failure_mapper.dart';
+import 'package:online_grocery/presentation/routes/route_name.dart';
 import 'package:online_grocery/presentation/shared/common_dialogs.dart';
+import 'package:chottu_link/dynamic_link/cl_dynamic_link_behaviour.dart';
+import 'package:chottu_link/dynamic_link/cl_dynamic_link_parameters.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key, required this.id});
+  const ProductDetailScreen({
+    super.key,
+    required this.id,
+    this.isFromDeepLink = false,
+  });
   final int id;
+  final bool isFromDeepLink;
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +29,18 @@ class ProductDetailScreen extends StatelessWidget {
       create: (context) =>
           ProductDetailBloc(FailureMapper(context))
             ..add(OnGetProductDetailEvent(id)),
-      child: const _ProductDetailScreenView(),
+      child: _ProductDetailScreenView(id: id, isFromDeepLink: isFromDeepLink),
     );
   }
 }
 
 class _ProductDetailScreenView extends StatefulWidget {
-  const _ProductDetailScreenView();
+  const _ProductDetailScreenView({
+    required this.id,
+    required this.isFromDeepLink,
+  });
+  final int id;
+  final bool isFromDeepLink;
 
   @override
   State<_ProductDetailScreenView> createState() =>
@@ -34,6 +49,47 @@ class _ProductDetailScreenView extends StatefulWidget {
 
 class _ProductDetailScreenViewState extends State<_ProductDetailScreenView> {
   int currentImageIndex = 0;
+
+  Future<void> _shareProduct(BuildContext context) async {
+    final parameters = CLDynamicLinkParameters(
+      link: Uri.parse("https://onlinegrocery.chottu.link/product/${widget.id}"),
+      domain: "onlinegrocery.chottu.link",
+      androidBehaviour: CLDynamicLinkBehaviour.app,
+      iosBehaviour: CLDynamicLinkBehaviour.app,
+      // utmCampaign: "share_product",
+      // utmSource: "app",
+      // utmMedium: "user_share",
+      // linkName: "product_${widget.id}",
+      // selectedPath: "product/${widget.id}",
+      // socialTitle: product.name,
+      // socialDescription: product.description,
+      // socialImageUrl: product.imageUrl,
+    );
+
+    ChottuLink.createDynamicLink(
+      parameters: parameters,
+      onSuccess: (link) {
+        debugPrint("✅ Shared Link: $link");
+        SharePlus.instance.share(
+          ShareParams(title: "Check out this product", uri: Uri.parse(link)),
+        );
+      },
+      onError: (error) {
+        debugPrint("❌ Error creating link: ${error.description}");
+        SharePlus.instance.share(
+          ShareParams(
+            title: "Check out this product",
+            uri: Uri.parse(
+              "https://onlinegrocery.chottu.link/product/${widget.id}",
+            ),
+          ),
+        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Failed to share link")));
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +102,19 @@ class _ProductDetailScreenViewState extends State<_ProductDetailScreenView> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                context.pop();
+                if (widget.isFromDeepLink) {
+                  context.goNamed(RouteName.bottomTab);
+                } else {
+                  context.pop();
+                }
               },
               icon: const Icon(Icons.arrow_back, color: Colors.black),
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await _shareProduct(context);
+                },
                 icon: const Icon(Icons.share, color: Colors.black),
               ),
             ],

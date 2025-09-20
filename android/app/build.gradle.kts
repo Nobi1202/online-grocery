@@ -7,10 +7,34 @@ plugins {
 
 import java.util.Properties
 
-val keystorePropertiesFile: File = rootProject.file("android/key.properties")
+val keystorePropertiesFile: File = rootProject.file("key.properties")
 val keystoreProperties = Properties()
+
+// Load keystore properties with validation
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(keystorePropertiesFile.inputStream())
+} else {
+    throw GradleException("Keystore properties file not found at: ${keystorePropertiesFile.absolutePath}")
+}
+
+// Helper function to get required property with validation
+fun getRequiredProperty(key: String): String {
+    val value = keystoreProperties[key] as String?
+    return value ?: throw GradleException("Required property '$key' not found in keystore properties file")
+}
+
+// Helper function to get optional property with default
+fun getOptionalProperty(key: String, defaultValue: String): String {
+    return keystoreProperties[key] as String? ?: defaultValue
+}
+
+// Helper function to validate keystore file exists
+fun validateKeystoreFile(storeFile: String): File {
+    val file = rootProject.file(storeFile)
+    if (!file.exists()) {
+        throw GradleException("Keystore file not found: ${file.absolutePath}. Please ensure the keystore file exists at the specified path.")
+    }
+    return file
 }
 
 android {
@@ -38,22 +62,22 @@ android {
     // 1️⃣ signingConfigs phải đặt trước khi gọi
     signingConfigs {
         create("dev") {
-            storeFile = file(rootProject.file(keystoreProperties["DEV_STORE_FILE"] as String))
-            storePassword = keystoreProperties["DEV_STORE_PASSWORD"] as String
-            keyAlias = keystoreProperties["DEV_KEY_ALIAS"] as String
-            keyPassword = keystoreProperties["DEV_KEY_PASSWORD"] as String
+            storeFile = validateKeystoreFile(getRequiredProperty("DEV_STORE_FILE"))
+            storePassword = getRequiredProperty("DEV_STORE_PASSWORD")
+            keyAlias = getRequiredProperty("DEV_KEY_ALIAS")
+            keyPassword = getRequiredProperty("DEV_KEY_PASSWORD")
         }
         create("staging") {
-            storeFile = file(rootProject.file(keystoreProperties["STG_STORE_FILE"] as String))
-            storePassword = keystoreProperties["STG_STORE_PASSWORD"] as String
-            keyAlias = keystoreProperties["STG_KEY_ALIAS"] as String
-            keyPassword = keystoreProperties["STG_KEY_PASSWORD"] as String
+            storeFile = validateKeystoreFile(getRequiredProperty("STG_STORE_FILE"))
+            storePassword = getRequiredProperty("STG_STORE_PASSWORD")
+            keyAlias = getRequiredProperty("STG_KEY_ALIAS")
+            keyPassword = getRequiredProperty("STG_KEY_PASSWORD")
         }
         create("prod") {
-            storeFile = file(rootProject.file(keystoreProperties["PROD_STORE_FILE"] as String))
-            storePassword = keystoreProperties["PROD_STORE_PASSWORD"] as String
-            keyAlias = keystoreProperties["PROD_KEY_ALIAS"] as String
-            keyPassword = keystoreProperties["PROD_KEY_PASSWORD"] as String
+            storeFile = validateKeystoreFile(getRequiredProperty("PROD_STORE_FILE"))
+            storePassword = getRequiredProperty("PROD_STORE_PASSWORD")
+            keyAlias = getRequiredProperty("PROD_KEY_ALIAS")
+            keyPassword = getRequiredProperty("PROD_KEY_PASSWORD")
         }
     }
 
@@ -89,6 +113,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            isShrinkResources = false // Resource shrinking requires code shrinking to be enabled
             signingConfig = null // sẽ override bởi flavor
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -97,6 +122,8 @@ android {
         }
         getByName("debug") {
             isDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false // Explicitly disable resource shrinking for debug builds
         }
     }
 }

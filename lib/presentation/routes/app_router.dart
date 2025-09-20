@@ -74,8 +74,13 @@ class AppRouter {
       GoRoute(
         path: RouteName.productDetail,
         name: RouteName.productDetail,
-        builder: (context, state) =>
-            ProductDetailScreen(id: state.extra as int),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return ProductDetailScreen(
+            id: extra['id'] as int,
+            isFromDeepLink: extra['isFromDeepLink'] as bool? ?? false,
+          );
+        },
       ),
     ],
   );
