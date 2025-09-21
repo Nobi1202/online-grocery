@@ -18,3 +18,21 @@ extension ListOfCartItemsMapper on CartDetailDto {
     ),
   );
 }
+
+extension ListOfCartItemsMapper2 on SingleCartDetailDto {
+  ListOfCartItemEntity toListOfCartEntity() => ListOfCartItemEntity(
+    total: products.first.total,
+    listOfCartItems: List.from(
+      products.map(
+        (product) => CartItemEntity(
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          thumbnail: product.thumbnail,
+          quantity: product.quantity,
+          total: product.total,
+        ),
+      ),
+    ),
+  );
+}

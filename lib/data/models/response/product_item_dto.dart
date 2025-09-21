@@ -21,7 +21,8 @@ class ProductItemDto {
   final int quantity;
   final double total;
   final double discountPercentage;
-  final double discountedTotal;
+  final double? discountedTotal;
+  final double? discountedPrice;
   final String thumbnail;
 
   ProductItemDto({
@@ -31,8 +32,9 @@ class ProductItemDto {
     required this.quantity,
     required this.total,
     required this.discountPercentage,
-    required this.discountedTotal,
+    this.discountedTotal,
     required this.thumbnail,
+    this.discountedPrice,
   });
 
   factory ProductItemDto.fromJson(Map<String, dynamic> json) =>

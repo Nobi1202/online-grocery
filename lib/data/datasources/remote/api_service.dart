@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:online_grocery/data/models/request/cart_item_schema.dart';
 import 'package:online_grocery/data/models/request/user_login_schema.dart';
 import 'package:online_grocery/data/models/response/cart_detail_dto.dart';
+import 'package:online_grocery/data/models/response/category_dto.dart';
+import 'package:online_grocery/data/models/response/product_category_detail_dto.dart';
 import 'package:online_grocery/data/models/response/user_info_dto.dart';
 import 'package:online_grocery/data/models/response/user_login_dto.dart';
 import 'package:retrofit/retrofit.dart';
@@ -25,4 +28,27 @@ abstract class ApiService {
 
   @GET('/carts/{id}')
   Future<SingleCartDetailDto> getFavoriteItems(@Path('id') int id);
+
+  @GET('/products/categories')
+  Future<List<CategoryDto>> getAllProductCategories();
+
+  @GET('/products/category/{category}')
+  Future<ProductCategoryDetailDto> getProductsByCategory(
+    @Path('category') String category,
+  );
+
+  @DELETE('/products/{id}')
+  Future<void> deleteProduct(@Path('id') int id);
+
+  @PUT('/carts/{id}')
+  Future<SingleCartDetailDto> updateCartItem(
+    @Path('id') int id,
+    @Body() CartItemSchema cartItemSchema,
+  );
+
+  @GET('/products')
+  Future<ProductCategoryDetailDto> getProducts();
+
+  @GET('/products/{id}')
+  Future<ProductDetailDto> getProductDetail(@Path('id') int id);
 }

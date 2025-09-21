@@ -25,19 +25,35 @@ import 'package:online_grocery/data/repositories/auth_respository_impl.dart'
     as _i729;
 import 'package:online_grocery/data/repositories/cart_repository_impl.dart'
     as _i1045;
+import 'package:online_grocery/data/repositories/product_repository_impl.dart'
+    as _i1012;
 import 'package:online_grocery/di/env_module.dart' as _i262;
 import 'package:online_grocery/di/third_party_module.dart' as _i410;
 import 'package:online_grocery/domain/repositories/auth_repository.dart'
     as _i752;
 import 'package:online_grocery/domain/repositories/cart_repository.dart'
     as _i642;
+import 'package:online_grocery/domain/repositories/product_repository.dart'
+    as _i56;
+import 'package:online_grocery/domain/usecase/delete_a_product_usecase.dart'
+    as _i916;
+import 'package:online_grocery/domain/usecase/get_all_product_category_usecase.dart'
+    as _i600;
+import 'package:online_grocery/domain/usecase/get_all_products_by_category_usecase.dart'
+    as _i32;
 import 'package:online_grocery/domain/usecase/get_cart_items_usecase.dart'
     as _i854;
 import 'package:online_grocery/domain/usecase/get_favorite_items_usecase.dart'
     as _i277;
+import 'package:online_grocery/domain/usecase/get_product_detail_usecase.dart'
+    as _i55;
+import 'package:online_grocery/domain/usecase/get_products_usecase.dart'
+    as _i905;
 import 'package:online_grocery/domain/usecase/get_user_info_usecase.dart'
     as _i183;
 import 'package:online_grocery/domain/usecase/login_user_usecase.dart' as _i47;
+import 'package:online_grocery/domain/usecase/update_a_cart_usecase.dart'
+    as _i346;
 import 'package:online_grocery/presentation/bloc/account/account_bloc.dart'
     as _i37;
 import 'package:online_grocery/presentation/bloc/cart/cart_bloc.dart' as _i257;
@@ -47,6 +63,9 @@ import 'package:online_grocery/presentation/bloc/locale/locale_bloc.dart'
     as _i356;
 import 'package:online_grocery/presentation/bloc/login/login_bloc.dart'
     as _i109;
+import 'package:online_grocery/presentation/bloc/product_detail/product_detail_bloc.dart'
+    as _i474;
+import 'package:online_grocery/presentation/bloc/shop/shop_bloc.dart' as _i461;
 import 'package:online_grocery/presentation/error/failure_mapper.dart' as _i519;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
@@ -89,6 +108,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factoryParam<_i109.LoginBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i109.LoginBloc(_failureMapper),
+    );
+    gh.factoryParam<_i461.ShopBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i461.ShopBloc(_failureMapper),
+    );
+    gh.factoryParam<_i474.ProductDetailBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i474.ProductDetailBloc(_failureMapper),
     );
     gh.singleton<String>(
       () => envModule.stagingBaseUrl(gh<_i377.AppConfig>()),
@@ -139,17 +164,38 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i642.ICartRepository>(
       () => _i1045.CartRepositoryImpl(gh<_i84.ApiService>()),
     );
+    gh.lazySingleton<_i56.IProductRepository>(
+      () => _i1012.ProductRepositoryImpl(gh<_i84.ApiService>()),
+    );
     gh.factory<_i47.LoginUserUsecase>(
       () => _i47.LoginUserUsecase(gh<_i752.IAuthRepository>()),
     );
     gh.factory<_i183.GetUserInfoUsecase>(
       () => _i183.GetUserInfoUsecase(gh<_i752.IAuthRepository>()),
     );
+    gh.factory<_i32.GetAllProductsByCategoryUsecase>(
+      () => _i32.GetAllProductsByCategoryUsecase(gh<_i56.IProductRepository>()),
+    );
+    gh.factory<_i600.GetAllProductCategoryUsecase>(
+      () => _i600.GetAllProductCategoryUsecase(gh<_i56.IProductRepository>()),
+    );
+    gh.factory<_i916.DeleteAProductUsecase>(
+      () => _i916.DeleteAProductUsecase(gh<_i56.IProductRepository>()),
+    );
+    gh.factory<_i905.GetProductsUsecase>(
+      () => _i905.GetProductsUsecase(gh<_i56.IProductRepository>()),
+    );
+    gh.factory<_i55.GetProductDetailUsecase>(
+      () => _i55.GetProductDetailUsecase(gh<_i56.IProductRepository>()),
+    );
     gh.factory<_i277.GetFavoriteItemsUsecase>(
       () => _i277.GetFavoriteItemsUsecase(gh<_i642.ICartRepository>()),
     );
     gh.factory<_i854.GetCartItemsUsecase>(
       () => _i854.GetCartItemsUsecase(gh<_i642.ICartRepository>()),
+    );
+    gh.factory<_i346.UpdateACartUsecase>(
+      () => _i346.UpdateACartUsecase(gh<_i642.ICartRepository>()),
     );
     return this;
   }
