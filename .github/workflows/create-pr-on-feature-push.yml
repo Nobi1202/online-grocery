@@ -1,0 +1,98 @@
+name: Create PR on Feature Push
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'bugfix/**'
+      - 'hotfix/**'
+
+jobs:
+  create-pull-request:
+    name: Create Pull Request to Main
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if PR already exists
+        id: check-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          
+          # Check if PR already exists for this branch
+          PR_EXISTS=$(gh pr list --head "$BRANCH_NAME" --base main --json number --jq length)
+          echo "pr_exists=$PR_EXISTS" >> $GITHUB_OUTPUT
+          
+          if [ "$PR_EXISTS" -gt 0 ]; then
+            PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --base main --json number --jq '.[0].number')
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "✅ PR already exists: #$PR_NUMBER"
+          else
+            echo "📝 No existing PR found"
+          fi
+
+      - name: Create Pull Request
+        if: steps.check-pr.outputs.pr_exists == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="${{ steps.check-pr.outputs.branch_name }}"
+          
+          # Extract feature name from branch (e.g., feature/user-auth -> user-auth)
+          FEATURE_NAME=$(echo "$BRANCH_NAME" | sed 's/.*\///')
+          
+          # Create PR title from branch name
+          PR_TITLE="[Feature] ${FEATURE_NAME}"
+          
+          # Create PR body with basic info
+          PR_BODY="## 🚀 Auto-generated Pull Request
+
+This PR was automatically created from branch \`$BRANCH_NAME\`.
+
+Please fill out the PR template with relevant information.
+
+### Branch: \`$BRANCH_NAME\`
+### Target: \`main\`
+"
+          
+          # Create the pull request
+          gh pr create \
+            --base main \
+            --head "$BRANCH_NAME" \
+            --title "$PR_TITLE" \
+            --body "$PR_BODY" \
+            --label "auto-created" \
+            --label "needs-review"
+          
+          echo "✅ Pull request created successfully!"
+
+      - name: Add comment to existing PR
+        if: steps.check-pr.outputs.pr_exists != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER="${{ steps.check-pr.outputs.pr_number }}"
+          COMMIT_SHA="${{ github.sha }}"
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          
+          COMMENT="## 🔄 New commits pushed
+
+**Commit**: \`${COMMIT_SHA:0:7}\`
+**Message**: $COMMIT_MESSAGE
+**Pusher**: @${{ github.actor }}
+**Time**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+"
+          
+          gh pr comment "$PR_NUMBER" --body "$COMMENT"
+          echo "✅ Comment added to PR #$PR_NUMBER"
+

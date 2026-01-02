@@ -1,0 +1,216 @@
+name: Update Wiki on PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  update-wiki:
+    name: Update GitHub Wiki
+    # Only run if PR was merged (not just closed)
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Checkout wiki
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}.wiki
+          path: wiki
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract PR information
+        id: pr-info
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_BRANCH="${{ github.event.pull_request.head.ref }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          MERGE_DATE=$(date -u +"%Y-%m-%d")
+          
+          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "pr_title=$PR_TITLE" >> $GITHUB_OUTPUT
+          echo "pr_author=$PR_AUTHOR" >> $GITHUB_OUTPUT
+          echo "pr_branch=$PR_BRANCH" >> $GITHUB_OUTPUT
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+          echo "merge_date=$MERGE_DATE" >> $GITHUB_OUTPUT
+
+      - name: Update Changelog Wiki Page
+        run: |
+          cd wiki
+          
+          # Create Changelog.md if it doesn't exist
+          if [ ! -f "Changelog.md" ]; then
+            echo "# 📋 Changelog" > Changelog.md
+            echo "" >> Changelog.md
+            echo "This page tracks all merged pull requests and features." >> Changelog.md
+            echo "" >> Changelog.md
+          fi
+          
+          # Prepare the new entry
+          NEW_ENTRY="## [${{ steps.pr-info.outputs.merge_date }}] PR #${{ steps.pr-info.outputs.pr_number }}: ${{ steps.pr-info.outputs.pr_title }}
+
+- **Author**: @${{ steps.pr-info.outputs.pr_author }}
+- **Branch**: \`${{ steps.pr-info.outputs.pr_branch }}\`
+- **PR Link**: ${{ steps.pr-info.outputs.pr_url }}
+- **Merged**: ${{ steps.pr-info.outputs.merge_date }}
+
+---
+
+"
+          
+          # Insert new entry after the header
+          awk -v entry="$NEW_ENTRY" '
+            NR==1 {print; next}
+            NR==2 {print; next}
+            NR==3 {print; next}
+            NR==4 {print entry; print; next}
+            {print}
+          ' Changelog.md > Changelog.tmp && mv Changelog.tmp Changelog.md
+
+      - name: Update Features Wiki Page
+        run: |
+          cd wiki
+          
+          # Only update if it's a feature branch
+          if [[ "${{ steps.pr-info.outputs.pr_branch }}" == feature/* ]]; then
+            # Create Features.md if it doesn't exist
+            if [ ! -f "Features.md" ]; then
+              echo "# ✨ Features" > Features.md
+              echo "" >> Features.md
+              echo "This page lists all implemented features." >> Features.md
+              echo "" >> Features.md
+            fi
+            
+            # Extract feature name
+            FEATURE_NAME=$(echo "${{ steps.pr-info.outputs.pr_branch }}" | sed 's/feature\///')
+            
+            # Add feature entry
+            FEATURE_ENTRY="### $FEATURE_NAME
+
+- **PR**: [#${{ steps.pr-info.outputs.pr_number }}](${{ steps.pr-info.outputs.pr_url }})
+- **Author**: @${{ steps.pr-info.outputs.pr_author }}
+- **Date**: ${{ steps.pr-info.outputs.merge_date }}
+- **Description**: ${{ steps.pr-info.outputs.pr_title }}
+
+"
+            
+            echo "$FEATURE_ENTRY" >> Features.md
+          fi
+
+      - name: Update Release Notes Wiki Page
+        run: |
+          cd wiki
+          
+          # Create Release-Notes.md if it doesn't exist
+          if [ ! -f "Release-Notes.md" ]; then
+            echo "# 🚀 Release Notes" > Release-Notes.md
+            echo "" >> Release-Notes.md
+            echo "## Unreleased" >> Release-Notes.md
+            echo "" >> Release-Notes.md
+          fi
+          
+          # Determine the type of change
+          CHANGE_TYPE="Changed"
+          if [[ "${{ steps.pr-info.outputs.pr_branch }}" == feature/* ]]; then
+            CHANGE_TYPE="Added"
+          elif [[ "${{ steps.pr-info.outputs.pr_branch }}" == bugfix/* ]]; then
+            CHANGE_TYPE="Fixed"
+          elif [[ "${{ steps.pr-info.outputs.pr_branch }}" == hotfix/* ]]; then
+            CHANGE_TYPE="Fixed"
+          fi
+          
+          # Add to unreleased section
+          RELEASE_ENTRY="- **[$CHANGE_TYPE]** ${{ steps.pr-info.outputs.pr_title }} ([#${{ steps.pr-info.outputs.pr_number }}](${{ steps.pr-info.outputs.pr_url }})) by @${{ steps.pr-info.outputs.pr_author }}"
+          
+          # Insert after "## Unreleased" line
+          awk -v entry="$RELEASE_ENTRY" '
+            /## Unreleased/ {print; print ""; print entry; next}
+            {print}
+          ' Release-Notes.md > Release-Notes.tmp && mv Release-Notes.tmp Release-Notes.md
+
+      - name: Create Wiki Home if not exists
+        run: |
+          cd wiki
+          
+          if [ ! -f "Home.md" ]; then
+            cat > Home.md << 'EOF'
+# 🏠 Online Grocery Wiki
+
+Welcome to the Online Grocery project wiki!
+
+## 📚 Documentation
+
+- [Changelog](Changelog) - Track all merged changes
+- [Features](Features) - List of implemented features
+- [Release Notes](Release-Notes) - Version release information
+
+## 🛠️ Development
+
+This wiki is automatically updated when pull requests are merged to the main branch.
+
+### Project Structure
+
+This is a Flutter application following clean architecture principles.
+
+### Tech Stack
+
+- Flutter
+- Dart
+- Clean Architecture
+- BLoC Pattern
+- GetIt for Dependency Injection
+
+## 🔗 Links
+
+- [Repository](https://github.com/${{ github.repository }})
+- [Issues](https://github.com/${{ github.repository }}/issues)
+- [Pull Requests](https://github.com/${{ github.repository }}/pulls)
+EOF
+          fi
+
+      - name: Commit and push wiki changes
+        run: |
+          cd wiki
+          
+          git add .
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update wiki for PR #${{ steps.pr-info.outputs.pr_number }}: ${{ steps.pr-info.outputs.pr_title }}"
+            git push origin master
+            echo "✅ Wiki updated successfully!"
+          fi
+
+      - name: Add comment to PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT="## 📚 Wiki Updated
+
+The GitHub wiki has been automatically updated with information from this PR.
+
+- [View Changelog](https://github.com/${{ github.repository }}/wiki/Changelog)
+- [View Features](https://github.com/${{ github.repository }}/wiki/Features)
+- [View Release Notes](https://github.com/${{ github.repository }}/wiki/Release-Notes)
+"
+          
+          gh pr comment ${{ steps.pr-info.outputs.pr_number }} --body "$COMMENT"
+

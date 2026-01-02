@@ -97,8 +97,14 @@ extension GetItInjectableX on _i174.GetIt {
       () => envModule.stagingConfig(),
       registerFor: {_staging},
     );
+    gh.factoryParam<_i461.ShopBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i461.ShopBloc(_failureMapper),
+    );
     gh.factoryParam<_i268.FavoriteBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i268.FavoriteBloc(_failureMapper),
+    );
+    gh.factoryParam<_i474.ProductDetailBloc, _i519.FailureMapper, dynamic>(
+      (_failureMapper, _) => _i474.ProductDetailBloc(_failureMapper),
     );
     gh.factoryParam<_i257.CartBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i257.CartBloc(_failureMapper),
@@ -108,12 +114,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factoryParam<_i109.LoginBloc, _i519.FailureMapper, dynamic>(
       (_failureMapper, _) => _i109.LoginBloc(_failureMapper),
-    );
-    gh.factoryParam<_i461.ShopBloc, _i519.FailureMapper, dynamic>(
-      (_failureMapper, _) => _i461.ShopBloc(_failureMapper),
-    );
-    gh.factoryParam<_i474.ProductDetailBloc, _i519.FailureMapper, dynamic>(
-      (_failureMapper, _) => _i474.ProductDetailBloc(_failureMapper),
     );
     gh.singleton<String>(
       () => envModule.stagingBaseUrl(gh<_i377.AppConfig>()),
@@ -179,11 +179,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i600.GetAllProductCategoryUsecase>(
       () => _i600.GetAllProductCategoryUsecase(gh<_i56.IProductRepository>()),
     );
-    gh.factory<_i916.DeleteAProductUsecase>(
-      () => _i916.DeleteAProductUsecase(gh<_i56.IProductRepository>()),
-    );
     gh.factory<_i905.GetProductsUsecase>(
       () => _i905.GetProductsUsecase(gh<_i56.IProductRepository>()),
+    );
+    gh.factory<_i916.DeleteAProductUsecase>(
+      () => _i916.DeleteAProductUsecase(gh<_i56.IProductRepository>()),
     );
     gh.factory<_i55.GetProductDetailUsecase>(
       () => _i55.GetProductDetailUsecase(gh<_i56.IProductRepository>()),
