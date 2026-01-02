@@ -77,9 +77,13 @@ This directory contains all GitHub-related automation and templates for the Onli
 
 | Document | Description |
 |----------|-------------|
-| [SETUP_GUIDE.md](SETUP_GUIDE.md) | Complete setup instructions and troubleshooting |
-| [WORKFLOW_DIAGRAM.md](WORKFLOW_DIAGRAM.md) | Visual diagrams of automation flows |
-| [workflows/README.md](workflows/README.md) | Detailed workflow documentation |
+| [QUICK_START.md](QUICK_START.md) | ⚡ 2-minute setup guide - Start here! |
+| [HOW_IT_WORKS.md](HOW_IT_WORKS.md) | 🎯 How PR template & triggers work |
+| [TRIGGERS_EXPLAINED.md](TRIGGERS_EXPLAINED.md) | 🔄 Detailed trigger documentation |
+| [SETUP_GUIDE.md](SETUP_GUIDE.md) | 🔧 Complete setup instructions |
+| [LABELS_SETUP.md](LABELS_SETUP.md) | 🏷️ How to create GitHub labels |
+| [WORKFLOW_DIAGRAM.md](WORKFLOW_DIAGRAM.md) | 📊 Visual diagrams of flows |
+| [workflows/README.md](workflows/README.md) | 📝 Workflow-specific docs |
 
 ## 🔄 Workflow Overview
 
