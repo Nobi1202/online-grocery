@@ -65,16 +65,19 @@ jobs:
           ### Target: \`main\`
           "
           
-          # Create the pull request
-          gh pr create \
+          # Create the pull request (without labels to avoid errors if they don't exist)
+          PR_URL=$(gh pr create \
             --base main \
             --head "$BRANCH_NAME" \
             --title "$PR_TITLE" \
-            --body "$PR_BODY" \
-            --label "auto-created" \
-            --label "needs-review"
+            --body "$PR_BODY")
           
-          echo "✅ Pull request created successfully!"
+          echo "✅ Pull request created successfully: $PR_URL"
+          
+          # Try to add labels (ignore errors if labels don't exist)
+          PR_NUMBER=$(echo "$PR_URL" | grep -o '[0-9]*$')
+          gh pr edit "$PR_NUMBER" --add-label "auto-created" 2>/dev/null || echo "⚠️  Label 'auto-created' not found, skipping"
+          gh pr edit "$PR_NUMBER" --add-label "needs-review" 2>/dev/null || echo "⚠️  Label 'needs-review' not found, skipping"
 
       - name: Add comment to existing PR
         if: steps.check-pr.outputs.pr_exists != '0'

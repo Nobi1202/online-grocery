@@ -29,7 +29,19 @@ The workflows require certain permissions to function:
    - ✅ Allow GitHub Actions to create and approve pull requests
 3. Click **Save**
 
-### 3. Branch Protection Rules (Optional but Recommended)
+### 3. Create GitHub Labels (Optional but Recommended)
+
+The workflow works without labels, but creating them improves organization:
+
+**Quick Setup via GitHub CLI:**
+```bash
+gh label create "auto-created" --description "PR was automatically created" --color "0E8A16"
+gh label create "needs-review" --description "PR needs code review" --color "FBCA04"
+```
+
+📖 See [LABELS_SETUP.md](LABELS_SETUP.md) for detailed instructions and more label options.
+
+### 4. Branch Protection Rules (Optional but Recommended)
 
 To ensure quality, set up branch protection for `main`:
 

@@ -1,42 +1,42 @@
-name: android-dev-ci
+# name: android-dev-ci
 
-on:
-  # push:
-  #   branches: [develop, main, "feature/*", "release/*"]
-  pull_request:
-    branches: [develop, main]
+# on:
+#   # push:
+#   #   branches: [develop, main, "feature/*", "release/*"]
+#   pull_request:
+#     branches: [develop, main]
 
-jobs:
-  build-android-dev:
-    name: Build Android Dev
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up Java (JDK)
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: temurin
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: 3.32.8
-      - name: Install dependencies
-        run: flutter pub get
-      # - name: Generate l10n
-      #   run: flutter gen-10n
-      - name: Code generation ( assets, DI , etc. )
-        run: flutter pub run build_runner build --delete-conflicting-outputs
-      - name: Format check (non-blocking)
-        run: dart format --output=none --set-exit-if-changed lib test || true
-      - name: Flutter Analyze
-        run: flutter analyze
-      - name: Build Android Dev
-        run: flutter build apk --release --flavor dev -t lib/main_dev.dart
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: android-dev
-      #     path: build/app/outputs/apk/release/app-release.apk
+# jobs:
+#   build-android-dev:
+#     name: Build Android Dev
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v3
+#       - name: Set up Java (JDK)
+#         uses: actions/setup-java@v4
+#         with:
+#           java-version: "17"
+#           distribution: temurin
+#       - name: Setup Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           channel: stable
+#           flutter-version: 3.32.8
+#       - name: Install dependencies
+#         run: flutter pub get
+#       # - name: Generate l10n
+#       #   run: flutter gen-10n
+#       - name: Code generation ( assets, DI , etc. )
+#         run: flutter pub run build_runner build --delete-conflicting-outputs
+#       - name: Format check (non-blocking)
+#         run: dart format --output=none --set-exit-if-changed lib test || true
+#       - name: Flutter Analyze
+#         run: flutter analyze
+#       - name: Build Android Dev
+#         run: flutter build apk --release --flavor dev -t lib/main_dev.dart
+#       # - name: Upload artifacts
+#       #   uses: actions/upload-artifact@v3
+#       #   with:
+#       #     name: android-dev
+#       #     path: build/app/outputs/apk/release/app-release.apk

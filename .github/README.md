@@ -21,20 +21,28 @@ This directory contains all GitHub-related automation and templates for the Onli
 
 ## 🚀 Quick Start
 
-### For First-Time Setup
+### ⚡ 2-Minute Setup
 
-1. **Enable GitHub Wiki**
-   - Go to repository Settings → Features
-   - Check "Wikis"
+1. **Enable Permissions**: Settings → Actions → General
+   - ✅ Read and write permissions
+   - ✅ Allow GitHub Actions to create and approve pull requests
 
-2. **Configure Workflow Permissions**
-   - Go to Settings → Actions → General
-   - Enable "Read and write permissions"
-   - Enable "Allow GitHub Actions to create and approve pull requests"
+2. **Enable Wiki**: Settings → Features → Check "Wikis"
 
-3. **Done!** The automation is ready to use.
+3. **Create Labels** (optional): 
+   ```bash
+   gh label create "auto-created" --color "0E8A16"
+   gh label create "needs-review" --color "FBCA04"
+   ```
 
-📖 See [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed instructions.
+4. **Start using**:
+   ```bash
+   git checkout -b feature/my-feature
+   git push origin feature/my-feature
+   # PR auto-created! 🎉
+   ```
+
+📖 See [QUICK_START.md](QUICK_START.md) for step-by-step guide or [SETUP_GUIDE.md](SETUP_GUIDE.md) for detailed instructions.
 
 ### For Daily Development
 
