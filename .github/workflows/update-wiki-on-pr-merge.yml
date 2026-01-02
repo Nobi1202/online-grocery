@@ -65,15 +65,15 @@ jobs:
           
           # Prepare the new entry
           NEW_ENTRY="## [${{ steps.pr-info.outputs.merge_date }}] PR #${{ steps.pr-info.outputs.pr_number }}: ${{ steps.pr-info.outputs.pr_title }}
-
-- **Author**: @${{ steps.pr-info.outputs.pr_author }}
-- **Branch**: \`${{ steps.pr-info.outputs.pr_branch }}\`
-- **PR Link**: ${{ steps.pr-info.outputs.pr_url }}
-- **Merged**: ${{ steps.pr-info.outputs.merge_date }}
-
----
-
-"
+          
+          - **Author**: @${{ steps.pr-info.outputs.pr_author }}
+          - **Branch**: \`${{ steps.pr-info.outputs.pr_branch }}\`
+          - **PR Link**: ${{ steps.pr-info.outputs.pr_url }}
+          - **Merged**: ${{ steps.pr-info.outputs.merge_date }}
+          
+          ---
+          
+          "
           
           # Insert new entry after the header
           awk -v entry="$NEW_ENTRY" '
@@ -103,13 +103,13 @@ jobs:
             
             # Add feature entry
             FEATURE_ENTRY="### $FEATURE_NAME
-
-- **PR**: [#${{ steps.pr-info.outputs.pr_number }}](${{ steps.pr-info.outputs.pr_url }})
-- **Author**: @${{ steps.pr-info.outputs.pr_author }}
-- **Date**: ${{ steps.pr-info.outputs.merge_date }}
-- **Description**: ${{ steps.pr-info.outputs.pr_title }}
-
-"
+            
+            - **PR**: [#${{ steps.pr-info.outputs.pr_number }}](${{ steps.pr-info.outputs.pr_url }})
+            - **Author**: @${{ steps.pr-info.outputs.pr_author }}
+            - **Date**: ${{ steps.pr-info.outputs.merge_date }}
+            - **Description**: ${{ steps.pr-info.outputs.pr_title }}
+            
+            "
             
             echo "$FEATURE_ENTRY" >> Features.md
           fi
@@ -204,13 +204,13 @@ EOF
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           COMMENT="## 📚 Wiki Updated
-
-The GitHub wiki has been automatically updated with information from this PR.
-
-- [View Changelog](https://github.com/${{ github.repository }}/wiki/Changelog)
-- [View Features](https://github.com/${{ github.repository }}/wiki/Features)
-- [View Release Notes](https://github.com/${{ github.repository }}/wiki/Release-Notes)
-"
+          
+          The GitHub wiki has been automatically updated with information from this PR.
+          
+          - [View Changelog](https://github.com/${{ github.repository }}/wiki/Changelog)
+          - [View Features](https://github.com/${{ github.repository }}/wiki/Features)
+          - [View Release Notes](https://github.com/${{ github.repository }}/wiki/Release-Notes)
+          "
           
           gh pr comment ${{ steps.pr-info.outputs.pr_number }} --body "$COMMENT"
 

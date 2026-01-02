@@ -56,14 +56,14 @@ jobs:
           
           # Create PR body with basic info
           PR_BODY="## 🚀 Auto-generated Pull Request
-
-This PR was automatically created from branch \`$BRANCH_NAME\`.
-
-Please fill out the PR template with relevant information.
-
-### Branch: \`$BRANCH_NAME\`
-### Target: \`main\`
-"
+          
+          This PR was automatically created from branch \`$BRANCH_NAME\`.
+          
+          Please fill out the PR template with relevant information.
+          
+          ### Branch: \`$BRANCH_NAME\`
+          ### Target: \`main\`
+          "
           
           # Create the pull request
           gh pr create \
@@ -86,12 +86,12 @@ Please fill out the PR template with relevant information.
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           
           COMMENT="## 🔄 New commits pushed
-
-**Commit**: \`${COMMIT_SHA:0:7}\`
-**Message**: $COMMIT_MESSAGE
-**Pusher**: @${{ github.actor }}
-**Time**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
-"
+          
+          **Commit**: \`${COMMIT_SHA:0:7}\`
+          **Message**: $COMMIT_MESSAGE
+          **Pusher**: @${{ github.actor }}
+          **Time**: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          "
           
           gh pr comment "$PR_NUMBER" --body "$COMMENT"
           echo "✅ Comment added to PR #$PR_NUMBER"
